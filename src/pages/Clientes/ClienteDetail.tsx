@@ -26,7 +26,7 @@ export default function ClienteDetail() {
 
   async function loadTab() {
     setLoading(true)
-    let query
+    let query: any
     switch (tab) {
       case 'ventas':
         query = supabase.from('sales').select('*').eq('customer_id', id).order('sale_date', { ascending: false })

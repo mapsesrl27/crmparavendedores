@@ -10,9 +10,9 @@
 
 insert into profiles (id, full_name, email, role, active)
 values (
-  '8bb43cdb-d798-4ad7-88e9-d6c8249bb3c0',      -- User UID copiado de Authentication
-  'Administrador',    -- Nombre que verás en el sistema
-  'mapsesrl27@gmail.com',        -- El mismo correo que usaste en Authentication
+  'PEGA-AQUI-EL-USER-UID',      -- User UID copiado de Authentication
+  'Nombre del Administrador',    -- Nombre que verás en el sistema
+  'correo@tuempresa.com',        -- El mismo correo que usaste en Authentication
   'admin',
   true
 );
