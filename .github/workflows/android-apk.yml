@@ -39,9 +39,11 @@ jobs:
           java-version: 21
           cache: gradle
 
-      - name: Preparar Android SDK
-        uses: android-actions/setup-android@v3
-
+            # El servidor de GitHub ya trae el Android SDK instalado (ANDROID_HOME).
+      # Solo aceptamos las licencias para que Gradle descargue lo que falte.
+      - name: Aceptar licencias del Android SDK
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+        
       - name: Instalar dependencias
         run: npm ci
 
