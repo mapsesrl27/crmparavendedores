@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
+import { isNativeApp } from '../../lib/native'
 
 // Evento que Chrome/Android dispara cuando la app se puede instalar
 interface BeforeInstallPromptEvent extends Event {
@@ -91,12 +92,13 @@ export function PwaManager() {
     setInstallEvent(null)
   }
 
-  const canOfferInstall = !hideInstall && !isStandalone() && (installEvent || showIosHint)
+  // Dentro del APK ya es una app instalada: no se ofrece instalar
+  const canOfferInstall = !isNativeApp && !hideInstall && !isStandalone() && (installEvent || showIosHint)
 
   return (
     <div
       className="pointer-events-none fixed inset-x-0 top-0 z-[60] flex flex-col items-center gap-2 px-3"
-      style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 0.5rem)' }}
+      style={{ paddingTop: 'calc(var(--sat) + 0.5rem)' }}
       aria-live="polite"
     >
       {!online && (

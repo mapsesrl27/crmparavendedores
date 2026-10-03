@@ -11,7 +11,7 @@ const ITEMS = [
 export function MobileNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-30 flex border-t border-slate-200 bg-white sm:hidden"
-      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+      style={{ paddingBottom: 'var(--sab)' }}>
       {ITEMS.map((item) => (
         <NavLink
           key={item.to}

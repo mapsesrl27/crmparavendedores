@@ -41,7 +41,7 @@ export function QuickAction() {
       )}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-teal-600 text-2xl text-white shadow-lg active:scale-95 sm:bottom-6"
+        className="fixed bottom-[calc(5rem+var(--sab))] right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-teal-600 text-2xl text-white shadow-lg active:scale-95 sm:bottom-6"
         aria-label="Registrar"
       >
         {open ? '✕' : '＋'}

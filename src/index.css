@@ -4,6 +4,10 @@
 
 :root {
   color-scheme: light;
+  /* Márgenes de la barra de estado y de gestos. En el APK, Capacitor inyecta
+     --safe-area-inset-* con valores correctos; en navegador/PWA se usa env(). */
+  --sat: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
+  --sab: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
 }
 
 html, body, #root {

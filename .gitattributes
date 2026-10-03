@@ -1,0 +1,6 @@
+# Mantener los scripts de Android con finales de línea correctos al subir desde Windows
+android/gradlew text eol=lf
+*.bat text eol=crlf
+*.jar binary
+*.png binary
+*.jks binary

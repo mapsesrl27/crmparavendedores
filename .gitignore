@@ -2,3 +2,8 @@ node_modules
 dist
 .env
 .DS_Store
+
+# Llaves de firma Android: NUNCA subirlas al repositorio
+*.jks
+*.keystore
+ANDROID_KEYSTORE_BASE64.txt

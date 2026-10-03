@@ -68,6 +68,36 @@ Cómo se comporta:
 
 Los íconos están en `public/` y sus originales editables en `icons-src/`.
 
+## PARTE 7 — App Android (APK) sin Play Store
+
+El APK se compila solo en GitHub cada vez que haces `git push` a `main`, sin Android Studio ni computadora potente.
+
+**Configuración (una sola vez)** en GitHub → tu repositorio → **Settings → Secrets and variables → Actions**:
+
+En la pestaña **Variables**, crea:
+- `APP_URL` = el link de tu CRM en Netlify (ej. `https://tu-sitio.netlify.app`). Con esto el APK abre el CRM desde Netlify y cada deploy llega a los teléfonos sin reinstalar.
+
+En la pestaña **Secrets**, crea estos 4 (sus valores vienen en el archivo de llaves que se entrega aparte, que NUNCA se sube al repositorio):
+- `ANDROID_KEYSTORE_BASE64`
+- `ANDROID_KEYSTORE_PASSWORD`
+- `ANDROID_KEY_ALIAS`
+- `ANDROID_KEY_PASSWORD`
+
+**Descargar el APK:** cuando termine la compilación (pestaña **Actions**, unos 5–8 minutos), el APK queda publicado en la sección **Releases** del repositorio. El link fijo a la última versión es:
+`https://github.com/mapsesrl27/crmparavendedores/releases/latest`
+
+**Instalar en el teléfono:** abre ese link en Chrome del Android, descarga el `.apk` y ábrelo. Android pedirá permitir "Instalar apps de fuentes desconocidas" para Chrome: acéptalo una vez.
+
+**Actualizaciones:**
+- Cambios en pantallas, datos o lógica del CRM: basta con publicar en Netlify. El APK los toma solo.
+- Cambios nativos (nuevos permisos, GPS, notificaciones, ícono): se instala el APK nuevo encima del anterior, sin desinstalar y sin perder la sesión.
+
+**Qué hace distinto el APK:**
+- Exportar reportes abre el menú Compartir (WhatsApp, Gmail, Drive) con el Excel adjunto.
+- El botón atrás de Android navega entre pantallas y cierra la app desde Inicio.
+
+**Llave de firma:** guarda el archivo `crm-campo-release.jks` y su contraseña en un lugar seguro (por ejemplo tu Google Drive). Si se pierde, los teléfonos tendrán que desinstalar la app para instalar versiones futuras.
+
 ---
 
 ## Notas importantes

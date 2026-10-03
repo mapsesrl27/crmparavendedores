@@ -2,6 +2,9 @@
   command = "npm run build"
   publish = "dist"
 
+[build.environment]
+  NODE_VERSION = "22"
+
 # El service worker y el manifest nunca deben quedar "pegados" en caché,
 # si no, los vendedores no recibirían las versiones nuevas.
 [[headers]]

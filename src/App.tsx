@@ -23,11 +23,13 @@ import Reportes from './pages/Reportes/Reportes'
 import Usuarios from './pages/Admin/Usuarios'
 import NotFound from './pages/NotFound'
 import { PwaManager } from './components/pwa/PwaManager'
+import { NativeBridge } from './components/native/NativeBridge'
 
 export default function App() {
   return (
     <BrowserRouter>
       <PwaManager />
+      <NativeBridge />
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />

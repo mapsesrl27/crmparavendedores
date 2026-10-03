@@ -1,0 +1,98 @@
+name: Compilar APK Android
+
+# Se ejecuta en cada push a main y también a mano desde la pestaña "Actions".
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # necesario para publicar el APK en "Releases"
+
+concurrency:
+  group: android-apk
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    env:
+      APP_URL: ${{ vars.APP_URL }}
+      VERSION_CODE: ${{ github.run_number }}
+      VERSION_NAME: 1.0.${{ github.run_number }}
+      HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Preparar Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Preparar Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - name: Preparar Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar la web
+        run: npm run build
+        env:
+          # Solo se usan si NO defines APP_URL (APK con el CRM empaquetado adentro)
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      - name: Sincronizar Capacitor
+        run: |
+          if [ -n "$APP_URL" ]; then echo "El APK abrirá el CRM desde: $APP_URL"; else echo "APP_URL vacío: el APK usará la copia empaquetada"; fi
+          npx cap sync android
+
+      - name: Restaurar la llave de firma
+        if: env.HAS_KEYSTORE == 'true'
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/release.jks"
+          echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+
+      - name: Compilar APK
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          chmod +x gradlew
+          if [ "$HAS_KEYSTORE" = "true" ]; then
+            ./gradlew assembleRelease --no-daemon
+            cp app/build/outputs/apk/release/app-release.apk "$GITHUB_WORKSPACE/CRM-Campo-$VERSION_NAME.apk"
+          else
+            echo "::warning::Sin llave de firma: se genera un APK de prueba (debug). Configura los Secrets para el APK definitivo."
+            ./gradlew assembleDebug --no-daemon
+            cp app/build/outputs/apk/debug/app-debug.apk "$GITHUB_WORKSPACE/CRM-Campo-$VERSION_NAME-debug.apk"
+          fi
+
+      - name: Guardar el APK (pestaña Actions)
+        uses: actions/upload-artifact@v4
+        with:
+          name: CRM-Campo-${{ env.VERSION_NAME }}
+          path: CRM-Campo-*.apk
+
+      - name: Publicar el APK en Releases (link directo para los vendedores)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-v${{ env.VERSION_NAME }}
+          name: CRM Campo ${{ env.VERSION_NAME }}
+          body: |
+            APK de CRM Campo para Android (instalación directa, sin Play Store).
+            Descarga el archivo .apk de abajo en el teléfono e instálalo.
+          files: CRM-Campo-*.apk
+          make_latest: true
