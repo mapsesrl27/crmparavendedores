@@ -22,10 +22,12 @@ import ProductosList from './pages/Productos/ProductosList'
 import Reportes from './pages/Reportes/Reportes'
 import Usuarios from './pages/Admin/Usuarios'
 import NotFound from './pages/NotFound'
+import { PwaManager } from './components/pwa/PwaManager'
 
 export default function App() {
   return (
     <BrowserRouter>
+      <PwaManager />
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />

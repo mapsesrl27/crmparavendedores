@@ -12,9 +12,12 @@ html, body, #root {
 
 body {
   @apply bg-slate-50 text-navy-900 font-sans antialiased;
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  /* En modo app evita el "rebote" y el resaltado azul al tocar */
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
 }
+/* Los márgenes de la barra de estado y de la barra de gestos los manejan
+   el encabezado y la navegación inferior (AppLayout / MobileNav). */
 
 .badge {
   @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;

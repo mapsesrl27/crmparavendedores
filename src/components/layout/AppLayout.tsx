@@ -12,11 +12,11 @@ export function AppLayout() {
       <Sidebar />
       <div className="flex-1">
         <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 sm:hidden"
-          style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
+          style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 0.75rem)' }}>
           <p className="font-extrabold text-navy-900">CRM Campo</p>
           <button onClick={signOut} className="text-sm text-slate-500">{profile?.full_name?.split(' ')[0]} · Salir</button>
         </header>
-        <main className="mx-auto max-w-6xl px-4 py-5 pb-24 sm:pb-10">
+        <main className="mx-auto max-w-6xl px-4 py-5 pb-[calc(6rem+env(safe-area-inset-bottom))] sm:pb-10">
           <Outlet />
         </main>
       </div>

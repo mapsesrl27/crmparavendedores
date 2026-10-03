@@ -80,7 +80,7 @@ export default function Reportes() {
     setLoadingKey(report.key)
     try {
       const rows = await report.run()
-      exportToExcel(`${report.key}_${todayISO()}`, rows, report.label.slice(0, 28))
+      await exportToExcel(`${report.key}_${todayISO()}`, rows, report.label.slice(0, 28))
     } finally {
       setLoadingKey(null)
     }

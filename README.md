@@ -53,6 +53,21 @@ Guarda el archivo. Esto es lo único que necesitas tocar para conectar la app a 
 2. Ve a **Administración → Usuarios** y crea ahí mismo a tus 5 vendedores (o supervisores/cobradores), eligiendo su rol. Ya no necesitas volver a Supabase para esto.
 3. Empieza cargando tu catálogo de **Productos**, luego tus **Clientes**, y desde ahí ya puedes crear rutas, visitas, ventas, cobranzas, compromisos y reservas.
 
+## PARTE 6 — Instalar el CRM como app en el teléfono (PWA)
+
+El CRM ya es una PWA: se instala en el celular como una app, con su ícono, a pantalla completa y abriendo al instante.
+
+**Android (Chrome):** entra al link de Netlify. Aparece arriba un aviso "Instala CRM Campo en tu teléfono" → **Instalar**. Si no aparece, menú ⋮ → **Instalar aplicación**.
+
+**iPhone (Safari):** entra al link → botón **Compartir** → **Agregar a inicio**.
+
+Cómo se comporta:
+- **Sin señal:** la app abre igual (su "cáscara" queda guardada en el teléfono) y muestra un aviso amarillo. Los datos de clientes, ventas y saldos siempre se leen en vivo de Supabase; nada se muestra desactualizado. Lo que se registre sin señal no se guarda, por eso el aviso.
+- **Actualizaciones:** cada vez que publicas en Netlify, los teléfonos muestran "Hay una versión nueva del CRM → Actualizar". No se recarga solo para no interrumpir una venta a medio llenar.
+- **Accesos directos:** manteniendo presionado el ícono aparecen Clientes, Rutas del día y Cobranzas (Android).
+
+Los íconos están en `public/` y sus originales editables en `icons-src/`.
+
 ---
 
 ## Notas importantes
